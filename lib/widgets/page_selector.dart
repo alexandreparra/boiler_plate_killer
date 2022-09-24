@@ -1,5 +1,8 @@
 import 'package:boiler_plate_killer/pages/entity_boilerplate/entity_boilerplate.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../pages/entity_boilerplate/entity_boilerplate_notifier.dart';
 
 class PageSelector extends StatelessWidget {
   final int index;
@@ -9,7 +12,9 @@ class PageSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (index == 0) {
-      return const EntityBoilerplate();
+      return ChangeNotifierProvider(
+          create: (context) => EntityBoilerplateNotifier(),
+          child: EntityBoilerplate());
     }
 
     return const SizedBox.shrink();
