@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 
 class EntityBoilerplateNotifier extends ChangeNotifier {
-  bool _generateEntityFlag = false;
+  bool _fieldsFlag = false;
+  bool _classNameFlag = false;
 
-  bool get generateEntityFlag => _generateEntityFlag;
+  bool get generateEntityFlag => _fieldsFlag && _classNameFlag;
 
   int _lineCount = 1;
 
   int get lineCount => _lineCount;
 
-  void checkStringLength(String input) {
+  void checkClassName(String input) {
+    input.trim().isNotEmpty ? _classNameFlag = true : _classNameFlag = false;
+    notifyListeners();
+  }
+
+  void checkFieldsLength(String input) {
     if (input.trim().isNotEmpty) {
-      _generateEntityFlag = true;
+      _fieldsFlag = true;
       _countLines(input);
     } else {
-      _generateEntityFlag = false;
+      _fieldsFlag = false;
     }
 
     notifyListeners();
@@ -29,5 +35,5 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
     }
   }
 
-  void generateEntity(String entity) {}
+  void generateEntity(String entityName, String entityFields) {}
 }
