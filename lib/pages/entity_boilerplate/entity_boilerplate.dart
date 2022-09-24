@@ -12,49 +12,59 @@ class EntityBoilerplate extends StatefulWidget {
 }
 
 class _EntityBoilerplateState extends State<EntityBoilerplate> {
-  final TextEditingController _inputController = TextEditingController();
+  final _fieldsController = TextEditingController();
+  final _classNameController = TextEditingController();
 
   @override
   void dispose() {
-    _inputController.dispose();
+    _fieldsController.dispose();
+    _classNameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(child: Consumer<EntityBoilerplateNotifier>(
-      builder: (context, notifier, _) {
-        return Column(children: [
-          const Text('Entity Factor'),
-          OutlinedButton(
-              onPressed: notifier.generateEntityFlag == true
-                  ? () {
-                      notifier.generateEntity(_inputController.text);
-                    }
-                  : null,
-              child: Text('Generate')),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                  fit: FlexFit.loose,
-                  child: LineCounter(lineLength: notifier.lineCount)),
-              Expanded(
-                  flex: 20,
-                  child: TextField(
-                      style: BpkTextStyle.editorText,
-                      controller: _inputController,
-                      keyboardType: TextInputType.multiline,
-                      onChanged: (String value) {
-                        notifier.checkStringLength(value);
-                      },
-                      maxLines: null))
-            ],
+    return Consumer<EntityBoilerplateNotifier>(builder: (context, notifier, _) {
+      return Scaffold(
+          floatingActionButton: ElevatedButton(
+            child: Text('Generate'),
+            onPressed: notifier.generateEntityFlag == true
+                ? () {
+                    notifier.generateEntity(
+                        _classNameController.text, _fieldsController.text);
+                  }
+                : null,
           ),
-        ]);
-      },
-    )));
+          body: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(height: 12),
+              const Text('Entity Factory'),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: TextField(
+                      controller: _classNameController,
+                      onChanged: notifier.checkClassName,
+                      decoration: InputDecoration(hintText: 'Class name'))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                      fit: FlexFit.loose,
+                      child: LineCounter(lineLength: notifier.lineCount)),
+                  Expanded(
+                      flex: 20,
+                      child: TextField(
+                          style: BpkTextStyle.editorText,
+                          controller: _fieldsController,
+                          keyboardType: TextInputType.multiline,
+                          onChanged: notifier.checkFieldsLength,
+                          maxLines: null))
+                ],
+              ),
+            ]),
+          ));
+    });
   }
 }
