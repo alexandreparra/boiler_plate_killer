@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EntityBoilerplate extends StatefulWidget {
-  EntityBoilerplate({Key? key}) : super(key: key);
+  const EntityBoilerplate({Key? key}) : super(key: key);
 
   @override
   State<EntityBoilerplate> createState() => _EntityBoilerplateState();
@@ -27,43 +27,48 @@ class _EntityBoilerplateState extends State<EntityBoilerplate> {
     return Consumer<EntityBoilerplateNotifier>(builder: (context, notifier, _) {
       return Scaffold(
           floatingActionButton: ElevatedButton(
-            child: Text('Generate'),
             onPressed: notifier.generateEntityFlag == true
                 ? () {
                     notifier.generateEntity(
                         _classNameController.text, _fieldsController.text);
                   }
                 : null,
+            child: const Text('Generate'),
           ),
-          body: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(height: 12),
-              const Text('Entity Factory'),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  child: TextField(
-                      controller: _classNameController,
-                      onChanged: notifier.checkClassName,
-                      decoration: InputDecoration(hintText: 'Class name'))),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                      fit: FlexFit.loose,
-                      child: LineCounter(lineLength: notifier.lineCount)),
-                  Expanded(
-                      flex: 20,
-                      child: TextField(
-                          style: BpkTextStyle.editorText,
-                          controller: _fieldsController,
-                          keyboardType: TextInputType.multiline,
-                          onChanged: notifier.checkFieldsLength,
-                          maxLines: null))
-                ],
-              ),
-            ]),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 12),
+                    const Text('Entity Factory'),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        child: TextField(
+                            controller: _classNameController,
+                            onChanged: notifier.checkClassName,
+                            decoration:
+                                const InputDecoration(hintText: 'Class name'))),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                            fit: FlexFit.loose,
+                            child: LineCounter(lineLength: notifier.lineCount)),
+                        Expanded(
+                            flex: 20,
+                            child: TextField(
+                                style: BpkTextStyle.editorText,
+                                controller: _fieldsController,
+                                keyboardType: TextInputType.multiline,
+                                onChanged: notifier.checkFieldsLength,
+                                maxLines: null))
+                      ],
+                    ),
+                  ]),
+            ),
           ));
     });
   }
