@@ -6,8 +6,8 @@ import 'pages/navigation/navigation_page.dart';
 
 void main() {
   runApp(MaterialApp(
-      theme: ThemeData(
-          textTheme: const TextTheme(bodyText1: TextStyle(fontSize: 14.0))),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       home: ChangeNotifierProvider(
           create: (context) => NavigationNotifier(),
           child: const NavigationPage())));
