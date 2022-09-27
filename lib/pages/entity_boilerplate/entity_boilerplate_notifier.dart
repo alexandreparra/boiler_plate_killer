@@ -18,11 +18,11 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
   void checkFieldsLength(String input) {
     if (input.trim().isNotEmpty) {
       _fieldsFlag = true;
-      _countLines(input);
     } else {
       _fieldsFlag = false;
     }
 
+    _countLines(input);
     notifyListeners();
   }
 
