@@ -2,6 +2,7 @@ import 'package:boiler_plate_killer/pages/entity_boilerplate/entity_boilerplate.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../pages/about/about_page.dart';
 import '../pages/entity_boilerplate/entity_boilerplate_notifier.dart';
 
 class PageSelector extends StatelessWidget {
@@ -14,7 +15,9 @@ class PageSelector extends StatelessWidget {
     if (index == 0) {
       return ChangeNotifierProvider(
           create: (context) => EntityBoilerplateNotifier(),
-          child: EntityBoilerplate());
+          child: const EntityBoilerplate());
+    } else if (index == 1) {
+      return const AboutPage();
     }
 
     return const SizedBox.shrink();
