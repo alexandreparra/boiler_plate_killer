@@ -29,8 +29,8 @@ class _EntityBoilerplateState extends State<EntityBoilerplate> {
           floatingActionButton: ElevatedButton(
             onPressed: notifier.generateEntityFlag == true
                 ? () {
-                    notifier.generateEntity(
-                        _classNameController.text, _fieldsController.text);
+                    notifier.generateEntity(context, _classNameController.text,
+                        _fieldsController.text);
                   }
                 : null,
             child: const Text('Generate'),
