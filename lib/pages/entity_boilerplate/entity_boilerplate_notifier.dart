@@ -1,3 +1,11 @@
+import 'dart:io';
+
+import 'package:boiler_plate_killer/util/entity_writer/entity_writer.dart';
+import 'package:boiler_plate_killer/util/extension/context_extensions.dart';
+import 'package:boiler_plate_killer/util/extension/string_extensions.dart';
+import 'package:boiler_plate_killer/util/style/snackbar_edges.dart';
+import 'package:boiler_plate_killer/widgets/error_snack_bar.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class EntityBoilerplateNotifier extends ChangeNotifier {
@@ -35,5 +43,33 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
     }
   }
 
-  void generateEntity(String entityName, String entityFields) {}
+  void generateEntity(
+      BuildContext context, String entityName, String entityFields) async {
+    final fields = entityFields.split('\n');
+
+    // Check errors
+    for (int i = 0; i != fields.length; i++) {
+      final words = fields[i].split(' ');
+      if (words.length != 2) {
+        context.showSnackBar(ErrorSnackBar(
+          content: Text('Malformed field at line ${i + 1}'),
+          margin: snackBarInsets(context),
+        ));
+        return;
+      }
+    }
+
+    final entityClassName = entityName.getEntityFileName();
+    String? filePath = await FilePicker.platform
+        .saveFile(dialogTitle: 'Save file to:', fileName: entityClassName);
+
+    if (filePath == null) {
+      return;
+    }
+
+    final file = File(filePath);
+
+    file.writeAsString(entityWriter(entityName, fields));
+    await Process.run('flutter', ['format', filePath]);
+  }
 }
