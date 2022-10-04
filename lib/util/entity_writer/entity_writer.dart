@@ -11,8 +11,10 @@ String entityWriter(String entityClassName, List<String> fields) {
   }
 
   entityFile.write('const $entityClassName({');
-  entityFile.writeAll(fields.toRequiredParameters());
-  entityFile.write('}); ');
+  for (String field in fieldNames) {
+    entityFile.write('required this.$field,') ;
+  }
+  entityFile.write('});');
 
   entityFile.write(BpkConstants.equalsOverride);
   entityFile.write(BpkConstants.openBracket);
