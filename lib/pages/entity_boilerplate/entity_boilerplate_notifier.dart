@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:boiler_plate_killer/util/entity_writer/entity_writer.dart';
 import 'package:boiler_plate_killer/util/extension/context_extensions.dart';
 import 'package:boiler_plate_killer/util/extension/string_extensions.dart';
-import 'package:boiler_plate_killer/util/style/snackbar_edges.dart';
-import 'package:boiler_plate_killer/widgets/error_snack_bar.dart';
+import 'package:boiler_plate_killer/util/style/bpk_colors.dart';
+import 'package:boiler_plate_killer/widgets/bpk_snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -49,12 +49,15 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
 
     // Check errors
     for (int i = 0; i != fields.length; i++) {
-      final words = fields[i].split(' ');
+      final words = fields[i].split(' ').where((e) => e.trim().isNotEmpty);
       if (words.length != 2) {
-        context.showSnackBar(ErrorSnackBar(
+        context.showSnackBar(BpkSnackBar(
           content: Text('Malformed field at line ${i + 1}'),
-          margin: snackBarInsets(context),
+          backgroundColor: BpkColors.errorRed,
+          context: context,
         ));
+        _fieldsFlag = false;
+        notifyListeners();
         return;
       }
     }
