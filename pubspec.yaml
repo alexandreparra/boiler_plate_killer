@@ -1,5 +1,5 @@
 name: boiler_plate_killer
-description: Developer tool to ease some boilerplates
+description: Developer tool to ease Dart/Flutter development.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

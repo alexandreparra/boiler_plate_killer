@@ -1,16 +1,29 @@
-# boiler_plate_killer
+# Boiler Plate Killer
 
-Developer tool to ease some boilerplates
+Developer tool to ease Dart/Flutter development.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+BoilerPlateKiller is a simple application to fasten Dart/Flutter development. The program is meant to be run on the desktop (Windows, Linux and MacOS) as this is where we program and the file saving api is complete.
 
-A few resources to get you started if this is your first Flutter project:
+For the moment the only way to use the application is by cloning and locally compiling it.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Below you'll find the description of the current capabilities.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Entity Factory
+![preview image](/preview/entity_factory.png)
+
+Entity Factory generates a file with overwritten == and hashCode methods from the given ClassName and parameter fields provided by you.
+
+For the class name use the simple PascalCase naming and in the fields you should input what parameters the entity receives like:
+
+```dart
+// No semicolons are needed
+int age
+String name
+```
+
+After clicking the 'Generate' button at the bottom left you'll be prompted to save the file somewhere and 'flutter format' will automatically be issued on the file.
+
+This can make it easy if you need to have a zero dependency == and hashCode generator, saving you a lot of time by only writing the parameters once and having the constructor, == and hashCode automatically generated.
+
