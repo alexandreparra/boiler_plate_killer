@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:boiler_plate_killer/util/entity_writer/entity_writer.dart';
-import 'package:boiler_plate_killer/util/extension/context_extensions.dart';
 import 'package:boiler_plate_killer/util/extension/string_extensions.dart';
 import 'package:boiler_plate_killer/util/style/bpk_colors.dart';
 import 'package:boiler_plate_killer/widgets/bpk_snack_bar.dart';
@@ -43,7 +42,7 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
     }
   }
 
-  void generateEntity(
+  Future<BpkSnackBar> generateEntity(
       BuildContext context, String entityName, String entityFields) async {
     final fields = entityFields.split('\n');
 
@@ -51,14 +50,14 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
     for (int i = 0; i != fields.length; i++) {
       final words = fields[i].split(' ').where((e) => e.trim().isNotEmpty);
       if (words.length != 2) {
-        context.showSnackBar(BpkSnackBar(
+        _fieldsFlag = false;
+        notifyListeners();
+
+        return BpkSnackBar(
           content: Text('Malformed field at line ${i + 1}'),
           backgroundColor: BpkColors.errorRed,
           context: context,
-        ));
-        _fieldsFlag = false;
-        notifyListeners();
-        return;
+        );
       }
     }
 
@@ -67,12 +66,22 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
         .saveFile(dialogTitle: 'Save file to:', fileName: entityClassName);
 
     if (filePath == null) {
-      return;
+      return BpkSnackBar(
+        content: const Text('Cannot find the provided path'),
+        backgroundColor: BpkColors.errorRed,
+        context: context,
+      );
     }
 
     final file = File(filePath);
 
     file.writeAsString(entityWriter(entityName, fields));
     await Process.run('flutter', ['format', filePath]);
+
+    return BpkSnackBar(
+      content: const Text('Successfully created and formatted file'),
+      backgroundColor: BpkColors.successGreen,
+      context: context,
+    );
   }
 }
