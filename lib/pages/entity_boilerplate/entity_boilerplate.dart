@@ -1,4 +1,5 @@
 import 'package:boiler_plate_killer/pages/entity_boilerplate/entity_boilerplate_notifier.dart';
+import 'package:boiler_plate_killer/util/extension/context_extensions.dart';
 import 'package:boiler_plate_killer/util/style/bpk_text_style.dart';
 import 'package:boiler_plate_killer/widgets/line_counter.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,10 @@ class _EntityBoilerplateState extends State<EntityBoilerplate> {
       return Scaffold(
           floatingActionButton: ElevatedButton(
             onPressed: notifier.generateEntityFlag == true
-                ? () {
-                    notifier.generateEntity(context, _classNameController.text,
+                ? () async {
+                    final status = await notifier.generateEntity(context, _classNameController.text,
                         _fieldsController.text);
+                    context.showSnackBar(status);
                   }
                 : null,
             child: const Text('Generate'),
