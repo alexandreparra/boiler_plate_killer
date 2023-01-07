@@ -4,7 +4,7 @@ Developer tool to ease Dart/Flutter development.
 
 ## Getting Started
 
-BoilerPlateKiller is a simple application to fasten Dart/Flutter development. The program is meant to be run on the desktop (Windows, Linux and MacOS) as this is where we program and the file saving api is complete.
+BoilerPlateKiller is a simple application to simplify Dart/Flutter development. The program is meant to be run on the desktop (Windows, Linux and MacOS) as this is where we program and the file saving api is complete.
 
 For the moment the only way to use the application is by cloning and locally compiling it.
 
