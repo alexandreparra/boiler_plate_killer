@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:boiler_plate_killer/util/entity_writer/entity_writer.dart';
+import 'package:boiler_plate_killer/util/extension/io_sink_extensions.dart';
 import 'package:boiler_plate_killer/util/extension/string_extensions.dart';
 import 'package:boiler_plate_killer/util/style/bpk_colors.dart';
 import 'package:boiler_plate_killer/widgets/bpk_snack_bar.dart';
@@ -43,7 +43,7 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
   }
 
   Future<BpkSnackBar> generateEntity(
-      BuildContext context, String entityName, String entityFields) async {
+      BuildContext context, String dataClassName, String entityFields) async {
     final fields = entityFields.split('\n');
 
     // Check errors
@@ -61,9 +61,9 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
       }
     }
 
-    final entityClassName = entityName.getEntityFileName();
+    final dataClassFileName = dataClassName.getEntityFileName();
     String? filePath = await FilePicker.platform
-        .saveFile(dialogTitle: 'Save file to:', fileName: entityClassName);
+        .saveFile(dialogTitle: 'Save file to:', fileName: dataClassFileName);
 
     if (filePath == null) {
       return BpkSnackBar(
@@ -75,7 +75,9 @@ class EntityBoilerplateNotifier extends ChangeNotifier {
 
     final file = File(filePath);
 
-    file.writeAsString(entityWriter(entityName, fields));
+    final ioSink = file.openWrite();
+    ioSink.writeDataClass(dataClassName, fields);
+    ioSink.close();
     await Process.run('flutter', ['format', filePath]);
 
     return BpkSnackBar(
