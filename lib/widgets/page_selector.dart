@@ -1,9 +1,9 @@
-import 'package:boiler_plate_killer/pages/entity_boilerplate/entity_boilerplate.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/about/about_page.dart';
-import '../pages/entity_boilerplate/entity_boilerplate_notifier.dart';
+import '../pages/data_class/data_class_notifier.dart';
+import '../pages/data_class/data_class_page.dart';
 
 class PageSelector extends StatelessWidget {
   final int index;
@@ -14,8 +14,8 @@ class PageSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     if (index == 0) {
       return ChangeNotifierProvider(
-          create: (context) => EntityBoilerplateNotifier(),
-          child: const EntityBoilerplate());
+          create: (context) => DataClassNotifier(),
+          child: const DataClassPage());
     } else if (index == 1) {
       return const AboutPage();
     }

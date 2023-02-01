@@ -1,18 +1,19 @@
-import 'package:boiler_plate_killer/pages/entity_boilerplate/entity_boilerplate_notifier.dart';
 import 'package:boiler_plate_killer/util/extension/context_extensions.dart';
 import 'package:boiler_plate_killer/util/style/bpk_text_style.dart';
 import 'package:boiler_plate_killer/widgets/line_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EntityBoilerplate extends StatefulWidget {
-  const EntityBoilerplate({Key? key}) : super(key: key);
+import 'data_class_notifier.dart';
+
+class DataClassPage extends StatefulWidget {
+  const DataClassPage({Key? key}) : super(key: key);
 
   @override
-  State<EntityBoilerplate> createState() => _EntityBoilerplateState();
+  State<DataClassPage> createState() => _DataClassPageState();
 }
 
-class _EntityBoilerplateState extends State<EntityBoilerplate> {
+class _DataClassPageState extends State<DataClassPage> {
   final _fieldsController = TextEditingController();
   final _classNameController = TextEditingController();
 
@@ -25,13 +26,13 @@ class _EntityBoilerplateState extends State<EntityBoilerplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<EntityBoilerplateNotifier>(builder: (context, notifier, _) {
+    return Consumer<DataClassNotifier>(builder: (context, notifier, _) {
       return Scaffold(
           floatingActionButton: ElevatedButton(
-            onPressed: notifier.generateEntityFlag == true
+            onPressed: notifier.generateDataClassFlag == true
                 ? () async {
-                    final status = await notifier.generateEntity(context, _classNameController.text,
-                        _fieldsController.text);
+                    final status = await notifier.generateDataClass(context,
+                        _classNameController.text, _fieldsController.text);
                     context.showSnackBar(status);
                   }
                 : null,
@@ -44,14 +45,31 @@ class _EntityBoilerplateState extends State<EntityBoilerplate> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 12),
-                    const Text('Entity Factory'),
+                    const Text('Data Class Factory'),
                     SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: TextField(
-                            controller: _classNameController,
-                            onChanged: notifier.checkClassName,
-                            decoration:
-                                const InputDecoration(hintText: 'Class name'))),
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: TextField(
+                          controller: _classNameController,
+                          onChanged: notifier.checkClassName,
+                          decoration:
+                              const InputDecoration(hintText: 'Class name')),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: DropdownButtonFormField<String>(
+                          value: notifier.classPostfixes.first,
+                          items: notifier.classPostfixes
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: notifier.selectClassPostfix,
+                          decoration: const InputDecoration(
+                              hintText: 'Class termination')),
+                    ),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
