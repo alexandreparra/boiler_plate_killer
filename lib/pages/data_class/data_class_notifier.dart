@@ -19,7 +19,7 @@ class DataClassNotifier extends ChangeNotifier {
   int get lineCount => _lineCount;
 
   // TODO this will be changed to a custom config later.
-  List<String> classPostfixes = ["Model", "Entity", "Request", "Response"];
+  List<String> classPostfixes = ["Model", "Entity", "Request", "Response", ""];
   String _selectedClassPostfix = "Model";
 
   void loadConfig() async {

@@ -1,3 +1,4 @@
+import 'package:boiler_plate_killer/pages/data_class/widgets/class_postfix_dropdown.dart';
 import 'package:boiler_plate_killer/util/extension/context_extensions.dart';
 import 'package:boiler_plate_killer/util/style/bpk_text_style.dart';
 import 'package:boiler_plate_killer/widgets/line_counter.dart';
@@ -56,18 +57,9 @@ class _DataClassPageState extends State<DataClassPage> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
-                      child: DropdownButtonFormField<String>(
-                          value: notifier.classPostfixes.first,
-                          items: notifier.classPostfixes
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: notifier.selectClassPostfix,
-                          decoration: const InputDecoration(
-                              hintText: 'Class termination')),
+                      child: ClassPostfixDropdown(
+                          classPostfixes: notifier.classPostfixes,
+                          onChanged: notifier.selectClassPostfix),
                     ),
                     const SizedBox(height: 12),
                     Row(
