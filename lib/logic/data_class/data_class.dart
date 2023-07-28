@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import '../../util/platform_util.dart';
 import 'data_class_errors.dart';
 import 'data_class_util.dart';
 
@@ -26,7 +27,10 @@ class DataClassGen {
     final file = File(filePath);
     final dataClassFileContents = writeDataClass(dataClassName, fields);
     file.writeAsString(dataClassFileContents);
-    _formatFile(filePath);
+
+    if (isDesktop()) {
+      _formatFile(filePath);
+    }
 
     return DataClassSuccess();
   }
