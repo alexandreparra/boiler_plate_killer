@@ -1,3 +1,4 @@
+import 'package:boiler_plate_killer/widgets/bpk_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 extension ContextExt on BuildContext {
@@ -5,8 +6,12 @@ extension ContextExt on BuildContext {
     ScaffoldMessenger.of(this).showSnackBar(snackBar);
   }
 
-  double height() =>
-      MediaQuery.of(this).size.height;
+  void showBpkSnackBar(BpkSnackBarModel snackBarModel) {
+    ScaffoldMessenger.of(this)
+        .showSnackBar(BpkSnackBar.fromModel(snackBarModel, this));
+  }
+
+  double height() => MediaQuery.of(this).size.height;
 
   double width() => MediaQuery.of(this).size.width;
 }
