@@ -1,4 +1,3 @@
-import 'package:boiler_plate_killer/pages/data_class/widgets/class_postfix_dropdown.dart';
 import 'package:boiler_plate_killer/util/extension/context_extensions.dart';
 import 'package:boiler_plate_killer/util/style/bpk_text_style.dart';
 import 'package:boiler_plate_killer/widgets/line_counter.dart';
@@ -28,13 +27,19 @@ class _DataClassPageState extends State<DataClassPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<DataClassNotifier>(builder: (context, notifier, _) {
+      if (notifier.snackBar != null) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          context.showBpkSnackBar(notifier.snackBar!);
+          notifier.snackBar = null;
+        });
+      }
+
       return Scaffold(
           floatingActionButton: ElevatedButton(
-            onPressed: notifier.generateDataClassFlag == true
+            onPressed: notifier.canGenerateDataClass == true
                 ? () async {
-                    final status = await notifier.generateDataClass(context,
+                    await notifier.generateDataClass(
                         _classNameController.text, _fieldsController.text);
-                    context.showSnackBar(status);
                   }
                 : null,
             child: const Text('Generate'),
@@ -54,12 +59,6 @@ class _DataClassPageState extends State<DataClassPage> {
                           onChanged: notifier.checkClassName,
                           decoration:
                               const InputDecoration(hintText: 'Class name')),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      child: ClassPostfixDropdown(
-                          classPostfixes: notifier.classPostfixes,
-                          onChanged: notifier.selectClassPostfix),
                     ),
                     const SizedBox(height: 12),
                     Row(
